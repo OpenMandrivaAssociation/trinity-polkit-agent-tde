@@ -1,0 +1,32 @@
+diff -up trinity-polkit-agent-tde-0.99.1/ConfigureChecks.cmake.omv trinity-polkit-agent-tde-0.99.1/ConfigureChecks.cmake
+--- trinity-polkit-agent-tde-0.99.1/ConfigureChecks.cmake.omv	2026-01-12 17:16:11.776750908 -0500
++++ trinity-polkit-agent-tde-0.99.1/ConfigureChecks.cmake	2026-01-12 17:16:25.294658940 -0500
+@@ -27,7 +27,7 @@ endif( WITH_GCC_VISIBILITY )
+ 
+ ##### check for polkit-tqt
+ 
+-pkg_search_module( POLKIT_TQT polkit-tqt )
++pkg_check_modules( POLKIT_TQT REQUIRED IMPORTED_TARGET polkit-tqt )
+ if( NOT POLKIT_TQT_FOUND )
+   tde_message_fatal( "polkit-tqt is required, but was not found on your system" )
+ endif( )
+diff -up trinity-polkit-agent-tde-0.99.1/src/CMakeLists.txt.omv trinity-polkit-agent-tde-0.99.1/src/CMakeLists.txt
+--- trinity-polkit-agent-tde-0.99.1/src/CMakeLists.txt.omv	2026-01-12 17:16:51.244830424 -0500
++++ trinity-polkit-agent-tde-0.99.1/src/CMakeLists.txt	2026-01-12 17:17:02.103490294 -0500
+@@ -9,7 +9,7 @@
+ #
+ #################################################
+ 
+-tde_import( polkit-tqt )
++#tde_import( polkit-tqt )
+ 
+ include_directories(
+   ${CMAKE_SOURCE_DIR}
+@@ -38,6 +38,6 @@ tde_create_translated_desktop(
+ tde_add_executable( polkit-agent-tde AUTOMOC
+   SOURCES AuthDialogWidget.ui AuthDetailsWidget.ui AuthDialog.h AuthDialog.cpp
+           polkit-listener.h polkit-listener.cpp polkit-agent-tde.h polkit-agent-tde.cpp main.cpp
+-  LINK tdecore-shared tdeui-shared polkit-tqt-agent-shared
++  LINK tdecore-shared tdeui-shared PkgConfig::POLKIT_TQT
+   DESTINATION ${BIN_INSTALL_DIR}
+ )

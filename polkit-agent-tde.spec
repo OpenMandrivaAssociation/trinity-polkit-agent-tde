@@ -7,7 +7,6 @@
 %define pkg_rel 2
 
 %define tde_pkg polkit-agent-tde
-%define tde_prefix /opt/trinity
 
 
 %undefine __brp_remove_la_files
@@ -32,17 +31,18 @@ License:	GPLv2+
 
 Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/system/%{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}.tar.xz
 
+Patch0:     trinity-polkit-agent-tde-fix-pkgconfig-polkit-tqt.patch
+
 BuildSystem:    cmake
 
 BuildOption:    -DCMAKE_BUILD_TYPE="RelWithDebInfo"
-BuildOption:    -DCMAKE_INSTALL_PATH=%{tde_prefix}
 BuildOption:    -DBUILD_ALL=ON
 BuildOption:    -DWITH_ALL_OPTIONS=ON
 BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
 BuildRequires:	trinity-tdebase-devel >= %{tde_version}
-BuildRequires:	libpolkit-tqt-devel
+BuildRequires:	pkgconfig(polkit-tqt)
 
 BuildRequires:	trinity-tde-cmake >= %{tde_version}
 
@@ -69,8 +69,6 @@ bring up authentication dialogs used for obtaining privileges.
 
 %conf -p
 unset QTDIR QTINC QTLIB
-export PATH="%{tde_prefix}/bin:${PATH}"
-export PKG_CONFIG_PATH="%{tde_prefix}/%{_lib}/pkgconfig"
 
 
 %install -a
