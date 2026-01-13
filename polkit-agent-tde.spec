@@ -7,6 +7,7 @@
 %define pkg_rel 2
 
 %define tde_pkg polkit-agent-tde
+%define tde_prefix /opt/trinity
 
 
 %undefine __brp_remove_la_files
@@ -69,6 +70,7 @@ bring up authentication dialogs used for obtaining privileges.
 
 %conf -p
 unset QTDIR QTINC QTLIB
+export PATH="%{tde_prefix}/bin:${PATH}"
 
 
 %install -a
